@@ -1,3 +1,6 @@
+# Azure DevOps Pipeline for React Frontend in 'Client' folder
+# Builds and deploys to Azure Static Web Apps
+
 trigger:
 - main
 
@@ -11,22 +14,18 @@ steps:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 
-# Install dependencies and build the React app
+# Install dependencies and build React app in Client folder
 - script: |
-    cd Client || exit 1  # Navigate to the client folder or exit if not found
-    echo "Current directory contents before build:"
-    ls -al  # List contents of current directory
-    npm install  # Install React app dependencies
-    npm run build  # Build the React app for production
-    echo "Current directory contents after build:"
-    ls -al  # List contents again after build
-  displayName: 'npm install and build in client folder'
-
+    cd Client || exit 1
+    npm install
+    npm run build
+  displayName: 'Build React App in Client folder'
 
 # Deploy to Azure Static Web App
 - task: AzureStaticWebApp@0
   inputs:
-    azure_static_web_apps_api_token: c4dd6bb70d50937f8ad7307d9e2ce42db0721d504755dba5fe7e58b281edc3b506-8e924fc7-e5dc-49fe-b18f-021521bf645701000230c54f2210  # Token from Azure DevOps secret
-    app_location: "/Client"  # Path to your React app folder
-    api_location: ""  # If you don't have an API, leave this blank
-    output_location: "Client/build"  # Correct path to the React build folder
+    app_location: 'Client'  # Location of your app source
+    api_location: ''        # No API in this setup
+    app_artifact_location: 'Client/build'  # Output of React build
+    azure_static_web_apps_api_token: $(deployment_variable)  # Token from Azure Portal
+  displayName: 'Deploy to Azure Static Web App'
