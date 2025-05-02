@@ -1,0 +1,32 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  # Download build artifacts from the build pipeline
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      artifactName: 'build-artifact'  # Replace with your actual artifact name
+      targetPath: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Download Build Artifacts'
+
+  # Check the contents of the downloaded artifact for debugging
+  - script: |
+      echo "Listing the contents of the working directory"
+      ls -alh $(System.DefaultWorkingDirectory)
+      ls -alh $(System.DefaultWorkingDirectory)/_Ritvik-Prathapani.capg_project
+    displayName: 'Check Artifact Contents'
+
+  # Deploy to Azure Static Web App
+  - task: AzureStaticWebApp@0
+    displayName: 'Deploy to Azure Static Web App'
+    inputs:
+      app_location: '$(System.DefaultWorkingDirectory)/_Ritvik-Prathapani.capg_project/Client'  # Adjust the path to your React app
+      output_location: 'build'  # Relative to app_location
+      skip_app_build: false
+      skip_api_build: false
+      is_static_export: false
+      verbose: false
+      azure_static_web_apps_api_token: '$(deployment_variable)'  # Ensure this is defined as a secret
