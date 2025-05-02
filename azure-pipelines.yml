@@ -26,7 +26,7 @@ steps:
 # Deploy to Azure Static Web App
 - task: AzureStaticWebApp@0
   inputs:
-    azure_static_web_apps_api_token: $(AzureStaticWebAppToken)  # Token from Azure DevOps secret
+    azure_static_web_apps_api_token: c4dd6bb70d50937f8ad7307d9e2ce42db0721d504755dba5fe7e58b281edc3b506-8e924fc7-e5dc-49fe-b18f-021521bf645701000230c54f2210  # Token from Azure DevOps secret
     app_location: "/Client"  # Path to your React app folder
     api_location: ""  # If you don't have an API, leave this blank
     output_location: "Client/build"  # Correct path to the React build folder
