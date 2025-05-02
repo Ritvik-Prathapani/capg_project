@@ -16,6 +16,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+    cd client  # Navigate to the client folder
+    npm install  # Install React app dependencies
+    npm run build  # Build the React app for production
+  displayName: 'npm install and build in client folder'
