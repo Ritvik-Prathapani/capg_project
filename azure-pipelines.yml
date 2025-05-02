@@ -5,12 +5,6 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-  # Debug the directory structure
-  - script: |
-      pwd
-      ls -la
-    displayName: 'Debug directory structure'
-
   # Install Node.js
   - task: NodeTool@0
     inputs:
@@ -22,17 +16,17 @@ steps:
       cd Client || exit 1
       npm install
       npm run build
-      ls -alh build
+      ls -alh build  # ✅ Correct path, no 'Client/' prefix
     displayName: 'Install dependencies and build React App'
 
   # Deploy to Azure Static Web App
   - task: AzureStaticWebApp@0
     displayName: 'Deploy to Azure Static Web App'
     inputs:
-      app_location: '/Client'      # Try with absolute path
+      app_location: '/Client'        # Folder with your React app
       output_location: 'build'      # Relative to app_location
-      skip_app_build: true         # Since we've already built the app
-      skip_api_build: true
-      is_static_export: true
-      verbose: true                # Enable verbose logging
+      skip_app_build: false
+      skip_api_build: false
+      is_static_export: false
+      verbose: false
       azure_static_web_apps_api_token: '$(deployment_variable)'
