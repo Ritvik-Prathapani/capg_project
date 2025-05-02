@@ -21,7 +21,7 @@ steps:
 # Deploy to Azure Static Web App
 - task: AzureStaticWebApp@0
   inputs:
-    azure_static_web_apps_api_token: $(AzureStaticWebAppToken)  # You need to set this variable in the pipeline
+    azure_static_web_apps_api_token: 2558c46ee48ec97d9bac6a39f37039f138862e0620941577d438428ee1a9767f06-736d07db-fbc8-4d07-94b3-2b0a5d60e63c010232805c3b1710  # You need to set this variable in the pipeline
     app_location: "/Client"  # The folder where your React app is located
     api_location: ""  # Leave empty if you don't have an API for the app
     output_location: "/Client/build"  # The build folder of your React app after build step
