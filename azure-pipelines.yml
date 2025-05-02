@@ -29,4 +29,4 @@ steps:
       skip_api_build: false
       is_static_export: false
       verbose: false
-      azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN)'  # ✅ Ensure this is configured as secret
+      azure_static_web_apps_api_token: '$(deployment_variable)'  # ✅ Ensure this is configured as secret
