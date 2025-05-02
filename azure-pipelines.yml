@@ -1,31 +1,32 @@
-# Azure DevOps Pipeline for React Frontend in 'Client' folder
-# Builds and deploys to Azure Static Web Apps
-
 trigger:
-- main
+  - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
-# Install Node.js
-- task: NodeTool@0
-  inputs:
-    versionSpec: '20.x'
-  displayName: 'Install Node.js'
+  # Install Node.js
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Install Node.js'
 
-# Install dependencies and build React app in Client folder
-- script: |
-    cd Client || exit 1
-    npm install
-    npm run build
-  displayName: 'Build React App in Client folder'
+  # Install dependencies and build React app
+  - script: |
+      cd Client || exit 1
+      npm install
+      npm run build
+      ls -alh Client/build  # List build directory to verify
+    displayName: 'Install dependencies and build React App'
 
-# Deploy to Azure Static Web App
-- task: AzureStaticWebApp@0
-  inputs:
-    app_location: 'Client'  # Location of your app source
-    api_location: ''        # No API in this setup
-    app_artifact_location: 'Client/build'  # Output of React build
-    azure_static_web_apps_api_token: $(deployment_variable)  # Token from Azure Portal
-  displayName: 'Deploy to Azure Static Web App'
+  # Deploy to Azure Static Web App
+  - task: AzureStaticWebApp@0  # Correct task version
+    displayName: 'Deploy to Azure Static Web App'
+    inputs:
+      app_location: 'Client'
+      output_location: 'Client/build'
+      skip_app_build: false
+      skip_api_build: false
+      is_static_export: false
+      verbose: false
+      azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN)'  # Ensure this token is correctly set
